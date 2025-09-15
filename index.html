@@ -191,13 +191,13 @@
         // Handle install button click
         function handleInstallClick() {
             if (deferredPrompt) {
-                // Chrome/Edge: Show automatic install prompt
+                // Chrome/Edge: Show automatic install prompt (WebAPK mode)
                 deferredPrompt.prompt();
                 
                 // Wait for user response
                 deferredPrompt.userChoice.then(({ outcome }) => {
                     if (outcome === 'accepted') {
-                        console.log('User accepted PWA installation');
+                        console.log('User accepted PWA installation - WebAPK mode');
                         // Installation will be handled by appinstalled event
                     } else {
                         console.log('User rejected PWA installation');
@@ -207,14 +207,11 @@
                     deferredPrompt = null;
                 });
             } else if (isSafari || isIOS) {
-                // iOS: Download Configuration Profile
-                const link = document.createElement('a');
-                link.href = 'sunny-pwa-webclip.mobileconfig';
-                link.download = 'sunny-pwa-webclip.mobileconfig';
-                link.click();
+                // iOS: Show manual installation instructions
+                alert('To install this app on iOS:\n\n1. Tap the Share button at the bottom of Safari\n2. Scroll down and tap "Add to Home Screen"\n3. Tap "Add" to install');
             } else {
                 // Android non-Chrome: Show instructions
-                showInstallInstructions();
+                alert('To install this app on Android:\n\n1. Tap the menu button (three dots) in your browser\n2. Select "Add to Home screen"\n3. Tap "Add" to install');
             }
         }
         
