@@ -151,7 +151,7 @@
             </div>
             
             <div id="installed-section" class="hidden">
-                <p>✅ App is installed! Redirecting...</p>
+                <p>✅ App is installed! Redirecting to target...</p>
             </div>
             
             <div id="not-installed-section" class="hidden">
@@ -286,10 +286,8 @@
             document.getElementById('checking-section').classList.add('hidden');
             document.getElementById('installed-section').classList.remove('hidden');
             
-            // Auto redirect to target URL after 2 seconds
-            setTimeout(() => {
-                window.location.href = TARGET_URL;
-            }, 2000);
+            // Immediate redirect to target URL (no delay for desktop app)
+            window.location.replace(TARGET_URL);
         }
         
         function showNotInstalledState() {
