@@ -155,6 +155,39 @@
         let deferredPrompt;
         let isInstalled = false;
         
+        // Detect Safari
+        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        
+        // Show Safari installation instructions
+        function showSafariInstructions() {
+            const instructions = `
+                <div style="text-align: left; background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; margin: 1rem 0;">
+                    <h3 style="margin-bottom: 1rem;">📱 How to Add to Home Screen:</h3>
+                    <ol style="margin-left: 1rem;">
+                        <li>Tap the <strong>Share</strong> button at the bottom of Safari</li>
+                        <li>Scroll down and tap <strong>"Add to Home Screen"</strong></li>
+                        <li>Tap <strong>"Add"</strong> to confirm</li>
+                    </ol>
+                    <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">
+                        Note: The "Add to Home Screen" option may be hidden - scroll down in the share menu to find it.
+                    </p>
+                </div>
+            `;
+            
+            document.getElementById('not-installed-section').innerHTML = `
+                <p>📱 Add Sunny PWA to your device</p>
+                <button id="install-btn" class="install-btn">Add to Home Screen</button>
+                ${instructions}
+            `;
+            
+            // Re-attach event listener to new button
+            const newInstallBtn = document.getElementById('install-btn');
+            if (newInstallBtn) {
+                newInstallBtn.addEventListener('click', showSafariInstructions);
+            }
+        }
+        
         // Check if PWA is installed
         function checkPWAInstallation() {
             // Check if running in standalone mode (installed PWA)
@@ -182,6 +215,12 @@
         function showNotInstalledState() {
             document.getElementById('checking-section').classList.add('hidden');
             document.getElementById('not-installed-section').classList.remove('hidden');
+            
+            // Update install button text for Safari
+            const installBtn = document.getElementById('install-btn');
+            if (isSafari || isIOS) {
+                installBtn.textContent = 'Add to Home Screen';
+            }
         }
         
         // Listen for beforeinstallprompt event
@@ -203,8 +242,11 @@
             const installBtn = document.getElementById('install-btn');
             if (installBtn) {
                 installBtn.addEventListener('click', async () => {
-                    if (deferredPrompt) {
-                        // Show install prompt
+                    if (isSafari || isIOS) {
+                        // Safari/iOS: Show instructions
+                        showSafariInstructions();
+                    } else if (deferredPrompt) {
+                        // Chrome/Edge: Show install prompt
                         deferredPrompt.prompt();
                         
                         // Wait for user response
