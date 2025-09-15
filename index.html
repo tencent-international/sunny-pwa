@@ -174,98 +174,48 @@
         const isAndroid = /Android/.test(navigator.userAgent);
         const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
         
-        // Show unified installation instructions
+        // Show simple install interface
         function showInstallInstructions() {
-            let instructions = '';
-            
-            if (isSafari || isIOS) {
-                // iOS/Safari instructions with Configuration Profile option
-                instructions = `
-                    <div style="text-align: left; background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 15px; margin: 1rem 0; backdrop-filter: blur(10px);">
-                        <h3 style="margin-bottom: 1.5rem; color: #fff; font-size: 1.3rem;">📱 How to Install App:</h3>
-                        
-                        <div style="margin-bottom: 1.5rem;">
-                            <h4 style="color: #ff6b6b; margin-bottom: 1rem;">Option 1: Configuration Profile (Recommended)</h4>
-                            <div style="display: flex; align-items: center; margin-bottom: 0.8rem;">
-                                <span style="background: #ff6b6b; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 14px; font-weight: bold;">1</span>
-                                <span>Tap <strong style="color: #ff6b6b;">"Install App"</strong> button below</span>
-                            </div>
-                            <div style="display: flex; align-items: center; margin-bottom: 0.8rem;">
-                                <span style="background: #ff6b6b; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 14px; font-weight: bold;">2</span>
-                                <span>Tap <strong style="color: #ff6b6b;">"Allow"</strong> to download the profile</span>
-                            </div>
-                            <div style="display: flex; align-items: center; margin-bottom: 1rem;">
-                                <span style="background: #ff6b6b; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 14px; font-weight: bold;">3</span>
-                                <span>Go to <strong style="color: #ff6b6b;">Settings > General > VPN & Device Management</strong> and install</span>
-                            </div>
-                        </div>
-                        
-                        <div style="margin-bottom: 1rem;">
-                            <h4 style="color: #4ecdc4; margin-bottom: 1rem;">Option 2: Manual Installation</h4>
-                            <div style="display: flex; align-items: center; margin-bottom: 0.8rem;">
-                                <span style="background: #4ecdc4; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 14px; font-weight: bold;">1</span>
-                                <span>Tap the <strong style="color: #4ecdc4;">Share</strong> button at the bottom of Safari</span>
-                            </div>
-                            <div style="display: flex; align-items: center; margin-bottom: 0.8rem;">
-                                <span style="background: #4ecdc4; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 14px; font-weight: bold;">2</span>
-                                <span>Scroll down and tap <strong style="color: #4ecdc4;">"Add to Home Screen"</strong></span>
-                            </div>
-                            <div style="display: flex; align-items: center; margin-bottom: 1rem;">
-                                <span style="background: #4ecdc4; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 14px; font-weight: bold;">3</span>
-                                <span>Tap <strong style="color: #4ecdc4;">"Add"</strong> to install the app</span>
-                            </div>
-                        </div>
-                        
-                        <div style="background: rgba(255,107,107,0.2); padding: 1rem; border-radius: 8px; border-left: 4px solid #ff6b6b;">
-                            <p style="margin: 0; font-size: 0.9rem; opacity: 0.9;">
-                                <strong>💡 Tip:</strong> Configuration Profile method is more reliable and works like installing a certificate!
-                            </p>
-                        </div>
-                    </div>
-                `;
-            } else if (isAndroid && !isChrome) {
-                // Android non-Chrome instructions
-                instructions = `
-                    <div style="text-align: left; background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 15px; margin: 1rem 0; backdrop-filter: blur(10px);">
-                        <h3 style="margin-bottom: 1.5rem; color: #fff; font-size: 1.3rem;">📱 How to Install App:</h3>
-                        <div style="margin-bottom: 1rem;">
-                            <div style="display: flex; align-items: center; margin-bottom: 0.8rem;">
-                                <span style="background: #ff6b6b; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 14px; font-weight: bold;">1</span>
-                                <span>Tap the <strong style="color: #ff6b6b;">menu</strong> button (three dots) in your browser</span>
-                            </div>
-                            <div style="display: flex; align-items: center; margin-bottom: 0.8rem;">
-                                <span style="background: #ff6b6b; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 14px; font-weight: bold;">2</span>
-                                <span>Select <strong style="color: #ff6b6b;">"Add to Home screen"</strong></span>
-                            </div>
-                            <div style="display: flex; align-items: center; margin-bottom: 1rem;">
-                                <span style="background: #ff6b6b; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 14px; font-weight: bold;">3</span>
-                                <span>Tap <strong style="color: #ff6b6b;">"Add"</strong> to install the app</span>
-                            </div>
-                        </div>
-                        <div style="background: rgba(255,107,107,0.2); padding: 1rem; border-radius: 8px; border-left: 4px solid #ff6b6b;">
-                            <p style="margin: 0; font-size: 0.9rem; opacity: 0.9;">
-                                <strong>💡 Tip:</strong> This installs the app to your home screen and works like a native app!
-                            </p>
-                        </div>
-                    </div>
-                `;
-            } else {
-                // Chrome/Edge - will show automatic install prompt
-                instructions = `
-                    <div style="text-align: center; background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 15px; margin: 1rem 0; backdrop-filter: blur(10px);">
-                        <h3 style="margin-bottom: 1rem; color: #fff; font-size: 1.3rem;">📱 Ready to Install!</h3>
-                        <p style="margin: 0; font-size: 1rem; opacity: 0.9;">
-                            Click the "Install App" button below to add this app to your device. It will work like a native app!
-                        </p>
-                    </div>
-                `;
-            }
-            
             document.getElementById('not-installed-section').innerHTML = `
                 <p>📱 Install Sunny PWA app</p>
                 <button id="install-btn" class="install-btn">Install App</button>
-                ${instructions}
             `;
+            
+            // Re-attach event listener to new button
+            const newInstallBtn = document.getElementById('install-btn');
+            if (newInstallBtn) {
+                newInstallBtn.addEventListener('click', handleInstallClick);
+            }
+        }
+        
+        // Handle install button click
+        function handleInstallClick() {
+            if (deferredPrompt) {
+                // Chrome/Edge: Show automatic install prompt
+                deferredPrompt.prompt();
+                
+                // Wait for user response
+                deferredPrompt.userChoice.then(({ outcome }) => {
+                    if (outcome === 'accepted') {
+                        console.log('User accepted PWA installation');
+                        // Installation will be handled by appinstalled event
+                    } else {
+                        console.log('User rejected PWA installation');
+                    }
+                    
+                    // Clear saved event
+                    deferredPrompt = null;
+                });
+            } else if (isSafari || isIOS) {
+                // iOS: Download Configuration Profile
+                const link = document.createElement('a');
+                link.href = 'sunny-pwa-webclip.mobileconfig';
+                link.download = 'sunny-pwa-webclip.mobileconfig';
+                link.click();
+            } else {
+                // Android non-Chrome: Show instructions
+                showInstallInstructions();
+            }
         }
         
         // Check if PWA is installed
@@ -273,6 +223,20 @@
             // Check if running in standalone mode (installed PWA)
             if (window.matchMedia('(display-mode: standalone)').matches || 
                 window.navigator.standalone === true) {
+                isInstalled = true;
+                showInstalledState();
+                return;
+            }
+            
+            // Additional check for Chrome PWA
+            if (window.matchMedia('(display-mode: minimal-ui)').matches) {
+                isInstalled = true;
+                showInstalledState();
+                return;
+            }
+            
+            // Check if launched from home screen (Chrome)
+            if (window.matchMedia('(display-mode: fullscreen)').matches) {
                 isInstalled = true;
                 showInstalledState();
                 return;
@@ -316,34 +280,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const installBtn = document.getElementById('install-btn');
             if (installBtn) {
-                installBtn.addEventListener('click', async () => {
-                    if (deferredPrompt) {
-                        // Chrome/Edge: Show automatic install prompt
-                        deferredPrompt.prompt();
-                        
-                        // Wait for user response
-                        const { outcome } = await deferredPrompt.userChoice;
-                        
-                        if (outcome === 'accepted') {
-                            console.log('User accepted PWA installation');
-                            // Installation will be handled by appinstalled event
-                        } else {
-                            console.log('User rejected PWA installation');
-                        }
-                        
-                        // Clear saved event
-                        deferredPrompt = null;
-                    } else if (isSafari || isIOS) {
-                        // iOS: Download Configuration Profile
-                        const link = document.createElement('a');
-                        link.href = 'sunny-pwa-webclip.mobileconfig';
-                        link.download = 'sunny-pwa-webclip.mobileconfig';
-                        link.click();
-                    } else {
-                        // Android non-Chrome: Show instructions
-                        showInstallInstructions();
-                    }
-                });
+                installBtn.addEventListener('click', handleInstallClick);
             }
             
             // Initial check
