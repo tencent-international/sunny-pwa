@@ -163,13 +163,6 @@
                 return;
             }
             
-            // Check localStorage for installation record
-            if (localStorage.getItem('pwa-installed') === 'true') {
-                isInstalled = true;
-                showInstalledState();
-                return;
-            }
-            
             // If not installed, show install option
             showNotInstalledState();
         }
@@ -219,12 +212,7 @@
                         
                         if (outcome === 'accepted') {
                             console.log('User accepted PWA installation');
-                            // Mark as installed
-                            localStorage.setItem('pwa-installed', 'true');
-                            // Recheck status
-                            setTimeout(() => {
-                                checkPWAInstallation();
-                            }, 1000);
+                            // Installation will be handled by appinstalled event
                         } else {
                             console.log('User rejected PWA installation');
                         }
@@ -244,7 +232,6 @@
         // Listen for PWA installation completion
         window.addEventListener('appinstalled', () => {
             console.log('PWA installed');
-            localStorage.setItem('pwa-installed', 'true');
             isInstalled = true;
             showInstalledState();
         });
