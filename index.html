@@ -132,8 +132,10 @@
         <p class="subtitle">A beautiful Progressive Web App</p>
         
         <div class="status">
-            <div id="status-text" class="status-text">Checking PWA installation status...</div>
-            <div id="loading" class="loading"></div>
+            <div id="checking-section">
+                <div id="status-text" class="status-text">Checking PWA installation status...</div>
+                <div id="loading" class="loading"></div>
+            </div>
             
             <div id="installed-section" class="hidden">
                 <p>✅ PWA is installed! Redirecting...</p>
@@ -168,8 +170,7 @@
         }
         
         function showInstalledState() {
-            document.getElementById('status-text').textContent = 'PWA is installed!';
-            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('checking-section').classList.add('hidden');
             document.getElementById('installed-section').classList.remove('hidden');
             
             // Auto redirect to target URL after 2 seconds
@@ -179,8 +180,7 @@
         }
         
         function showNotInstalledState() {
-            document.getElementById('status-text').textContent = 'PWA not installed';
-            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('checking-section').classList.add('hidden');
             document.getElementById('not-installed-section').classList.remove('hidden');
         }
         
