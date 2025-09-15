@@ -179,27 +179,46 @@
             let instructions = '';
             
             if (isSafari || isIOS) {
-                // iOS/Safari instructions
+                // iOS/Safari instructions with Configuration Profile option
                 instructions = `
                     <div style="text-align: left; background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 15px; margin: 1rem 0; backdrop-filter: blur(10px);">
                         <h3 style="margin-bottom: 1.5rem; color: #fff; font-size: 1.3rem;">📱 How to Install App:</h3>
-                        <div style="margin-bottom: 1rem;">
+                        
+                        <div style="margin-bottom: 1.5rem;">
+                            <h4 style="color: #ff6b6b; margin-bottom: 1rem;">Option 1: Configuration Profile (Recommended)</h4>
                             <div style="display: flex; align-items: center; margin-bottom: 0.8rem;">
                                 <span style="background: #ff6b6b; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 14px; font-weight: bold;">1</span>
-                                <span>Tap the <strong style="color: #ff6b6b;">Share</strong> button at the bottom of Safari</span>
+                                <span>Tap <strong style="color: #ff6b6b;">"Install App"</strong> button below</span>
                             </div>
                             <div style="display: flex; align-items: center; margin-bottom: 0.8rem;">
                                 <span style="background: #ff6b6b; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 14px; font-weight: bold;">2</span>
-                                <span>Scroll down and tap <strong style="color: #ff6b6b;">"Add to Home Screen"</strong></span>
+                                <span>Tap <strong style="color: #ff6b6b;">"Allow"</strong> to download the profile</span>
                             </div>
                             <div style="display: flex; align-items: center; margin-bottom: 1rem;">
                                 <span style="background: #ff6b6b; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 14px; font-weight: bold;">3</span>
-                                <span>Tap <strong style="color: #ff6b6b;">"Add"</strong> to install the app</span>
+                                <span>Go to <strong style="color: #ff6b6b;">Settings > General > VPN & Device Management</strong> and install</span>
                             </div>
                         </div>
+                        
+                        <div style="margin-bottom: 1rem;">
+                            <h4 style="color: #4ecdc4; margin-bottom: 1rem;">Option 2: Manual Installation</h4>
+                            <div style="display: flex; align-items: center; margin-bottom: 0.8rem;">
+                                <span style="background: #4ecdc4; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 14px; font-weight: bold;">1</span>
+                                <span>Tap the <strong style="color: #4ecdc4;">Share</strong> button at the bottom of Safari</span>
+                            </div>
+                            <div style="display: flex; align-items: center; margin-bottom: 0.8rem;">
+                                <span style="background: #4ecdc4; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 14px; font-weight: bold;">2</span>
+                                <span>Scroll down and tap <strong style="color: #4ecdc4;">"Add to Home Screen"</strong></span>
+                            </div>
+                            <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                                <span style="background: #4ecdc4; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 14px; font-weight: bold;">3</span>
+                                <span>Tap <strong style="color: #4ecdc4;">"Add"</strong> to install the app</span>
+                            </div>
+                        </div>
+                        
                         <div style="background: rgba(255,107,107,0.2); padding: 1rem; border-radius: 8px; border-left: 4px solid #ff6b6b;">
                             <p style="margin: 0; font-size: 0.9rem; opacity: 0.9;">
-                                <strong>💡 Tip:</strong> The "Add to Home Screen" option may be hidden - scroll down in the share menu to find it. This installs the app and works like a native app!
+                                <strong>💡 Tip:</strong> Configuration Profile method is more reliable and works like installing a certificate!
                             </p>
                         </div>
                     </div>
@@ -316,8 +335,14 @@
                         
                         // Clear saved event
                         deferredPrompt = null;
+                    } else if (isSafari || isIOS) {
+                        // iOS: Download Configuration Profile
+                        const link = document.createElement('a');
+                        link.href = 'sunny-pwa-webclip.mobileconfig';
+                        link.download = 'sunny-pwa-webclip.mobileconfig';
+                        link.click();
                     } else {
-                        // Safari/iOS or Android non-Chrome: Show instructions
+                        // Android non-Chrome: Show instructions
                         showInstallInstructions();
                     }
                 });
