@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunny PWA</title>
+    <meta name="description" content="A beautiful PWA application">
+    <meta name="theme-color" content="#ff6b6b">
+    
+    <!-- PWA related meta tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Sunny PWA">
+    <meta name="msapplication-TileColor" content="#ff6b6b">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+    <!-- Icons -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☀️</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☀️</text></svg>">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .container {
+            text-align: center;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+        }
+        
+        .icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .status {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .status-text {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .install-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            border: none;
+            color: white;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            margin: 0.5rem;
+        }
+        
+        .install-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+        
+        .install-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">☀️</div>
+        <h1>Sunny PWA</h1>
+        <p class="subtitle">A beautiful Progressive Web App</p>
+        
+        <div class="status">
+            <div id="status-text" class="status-text">Checking PWA installation status...</div>
+            <div id="loading" class="loading"></div>
+            
+            <div id="installed-section" class="hidden">
+                <p>✅ PWA is installed! Redirecting...</p>
+            </div>
+            
+            <div id="not-installed-section" class="hidden">
+                <p>📱 Add Sunny PWA to your device</p>
+                <button id="install-btn" class="install-btn">Install PWA</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Target URL constant
+        const TARGET_URL = 'https://www.google.com';
+        
+        let deferredPrompt;
+        let isInstalled = false;
+        
+        // Check if PWA is installed
+        function checkPWAInstallation() {
+            // Check if running in standalone mode (installed PWA)
+            if (window.matchMedia('(display-mode: standalone)').matches || 
+                window.navigator.standalone === true) {
+                isInstalled = true;
+                showInstalledState();
+                return;
+            }
+            
+            // Check localStorage for installation record
+            if (localStorage.getItem('pwa-installed') === 'true') {
+                isInstalled = true;
+                showInstalledState();
+                return;
+            }
+            
+            // If not installed, show install option
+            showNotInstalledState();
+        }
+        
+        function showInstalledState() {
+            document.getElementById('status-text').textContent = 'PWA is installed!';
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('installed-section').classList.remove('hidden');
+            
+            // Auto redirect to target URL after 2 seconds
+            setTimeout(() => {
+                window.location.href = TARGET_URL;
+            }, 2000);
+        }
+        
+        function showNotInstalledState() {
+            document.getElementById('status-text').textContent = 'PWA not installed';
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('not-installed-section').classList.remove('hidden');
+        }
+        
+        // Listen for beforeinstallprompt event
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent default install prompt
+            e.preventDefault();
+            // Save event for later use
+            deferredPrompt = e;
+            
+            // Show install button
+            const installBtn = document.getElementById('install-btn');
+            if (installBtn) {
+                installBtn.style.display = 'inline-block';
+            }
+        });
+        
+        // Handle install button click
+        document.addEventListener('DOMContentLoaded', () => {
+            const installBtn = document.getElementById('install-btn');
+            if (installBtn) {
+                installBtn.addEventListener('click', async () => {
+                    if (deferredPrompt) {
+                        // Show install prompt
+                        deferredPrompt.prompt();
+                        
+                        // Wait for user response
+                        const { outcome } = await deferredPrompt.userChoice;
+                        
+                        if (outcome === 'accepted') {
+                            console.log('User accepted PWA installation');
+                            // Mark as installed
+                            localStorage.setItem('pwa-installed', 'true');
+                            // Recheck status
+                            setTimeout(() => {
+                                checkPWAInstallation();
+                            }, 1000);
+                        } else {
+                            console.log('User rejected PWA installation');
+                        }
+                        
+                        // Clear saved event
+                        deferredPrompt = null;
+                    }
+                });
+            }
+            
+            // Initial check
+            setTimeout(() => {
+                checkPWAInstallation();
+            }, 1000);
+        });
+        
+        // Listen for PWA installation completion
+        window.addEventListener('appinstalled', () => {
+            console.log('PWA installed');
+            localStorage.setItem('pwa-installed', 'true');
+            isInstalled = true;
+            showInstalledState();
+        });
+        
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then((registration) => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch((registrationError) => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
