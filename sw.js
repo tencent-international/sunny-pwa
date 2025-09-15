@@ -1,8 +1,8 @@
 const CACHE_NAME = 'sunny-pwa-v1';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/manifest.json'
+  '/sunny-pwa/',
+  '/sunny-pwa/index.html',
+  '/sunny-pwa/manifest.json'
 ];
 
 // 安装事件
